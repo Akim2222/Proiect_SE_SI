@@ -2,7 +2,7 @@
 Proect Sisteme Expert + Senzori Inteligenti
 
 Studenti: 
-- Grigore Alin
 - Grecu Bianca
+- Grigore Alin
 - Rusti Alexandra
 - Titirez Daniel
