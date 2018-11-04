@@ -1,7 +1,7 @@
 #include <hcrs04.h> /* adaugare librarie pentru senzor */
 
 #define PINTRIG 6 definire pin pentru triger
-#define PINECHO 5 definire pin pentru raspunsul de la senzor
+#define PINECHO 5 definire pin pentru receptie de la senzor
 
 hcrs04 mySensor(PINTRIG, PINECHO);
  
