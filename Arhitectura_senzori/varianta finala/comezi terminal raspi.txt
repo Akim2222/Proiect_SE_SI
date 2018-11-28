@@ -1,0 +1,8 @@
+Comezi folosite:
+sudo apt- get update
+sudo apt -get upgrade
+sudo apt-get install moreutils
+wget https://raw.githubusercontent.com/tbird20d/grabserial/master/grabserial grabserial
+lsusb
+dmesg
+python grabserial|ls
