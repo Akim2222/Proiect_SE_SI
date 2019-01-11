@@ -1,0 +1,144 @@
+#include "dht.h"
+#define dht_apin A1 
+String logon="disconnected", admin="daniel", password="dan", user="", pass="";
+int option=0, lastOpt=0, digitalPin=0, valoare=0;
+int Pin = 8;
+int Pin1 = 10;
+int Reading;
+const int trigPin = 11;
+const int echoPin = 12;
+long duration;
+int distance;
+dht DHT;
+const int groundpin = A4;           
+const int powerpin = A5;             
+const int xpin = A3;                 
+const int ypin = A2;                  
+const int zpin = A1;
+void setup() {
+ pinMode(Pin, INPUT);
+ pinMode(Pin1, OUTPUT);
+  Serial.begin(9600);
+pinMode(trigPin, OUTPUT); 
+pinMode(echoPin, INPUT); 
+Serial.begin(9600);
+ pinMode(groundpin, OUTPUT);
+  pinMode(powerpin, OUTPUT);
+  digitalWrite(groundpin, LOW);
+  digitalWrite(powerpin, HIGH); 
+}
+
+
+void loop() {
+ if(logon=="disconnected"){
+  login();
+ }
+if(logon=="connected"){
+  menu();
+  logon="None";
+  }
+  if(Serial.available()){
+     option=Serial.readString().toInt(); 
+switch(option){
+  case 1:  
+  Serial.print("Valoare: ");
+  Serial.println(analogRead(A0));
+  break;
+  case 2:
+  pinMode(9,OUTPUT);
+  Serial.print("Dati o valoare: 0-255");
+  while(Serial.available()==0)
+   delay(1); 
+    valoare = Serial.readString().toInt();
+  analogWrite(9,valoare);
+  break;
+  case 3:
+ Reading = digitalRead(Pin);
+  
+  if(Reading == HIGH)
+  {
+    Serial.println("HIGH");
+  }
+  if(Reading == LOW)
+  {
+    Serial.println("LOW");
+  }
+  break;
+  case 4:
+  Serial.println("HIGH");
+  digitalWrite(10, HIGH);
+  break;
+  case 5:
+  menu();
+  break;
+  case 6:
+digitalWrite(trigPin, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin, LOW);
+duration = pulseIn(echoPin, HIGH);
+distance= duration*0.034/2;
+Serial.print("Distance: ");
+Serial.println(distance);
+  break;
+  case 7:
+  DHT.read11(dht_apin);
+    Serial.print("Current humidity = ");
+    Serial.print(DHT.humidity);
+    Serial.print("%  ");
+    Serial.print("temperature = ");
+    Serial.print(DHT.temperature); 
+    Serial.println("C  ");
+    delay(5000);
+  break;
+  case 8:
+  Serial.print(analogRead(xpin));
+  Serial.print("\t");
+  Serial.print(analogRead(ypin));
+  Serial.print("\t");
+  Serial.print(analogRead(zpin));
+  Serial.println();
+  delay(100);
+  break;
+  default: Serial.println("Aceasta optiune nu exista,reveniti la meniu");
+}
+}
+}
+void login(){
+Serial.println("Utilizator:");
+while(Serial.available()==0)
+delay(1);
+if(Serial.available()){
+  user=Serial.readString();
+  if(user==admin){
+    Serial.println("Parola: ");
+    while(Serial.available()==0)
+    delay(1);
+    if(Serial.available()){
+    pass=Serial.readString();
+    if(pass==password){
+     Serial.println("Logare reusita");
+     logon="connected";
+         }
+         else{
+      Serial.println("Logare esuata!");   
+           }
+          }
+         }
+    else{
+      Serial.println("Logare esuata!");   
+      }
+     }
+    }
+void menu(){
+Serial.println("Meniu principal");
+Serial.println("1. Analog read pe pinul A0");
+Serial.println("2. Analog write pe pinul 9 cu valoare 155");
+Serial.println("3. Digital read pe pinul 8");
+Serial.println("4. Digital write high pe pinul 10");
+Serial.println("5. Revenire meniu");
+Serial.println("6. Senzor distanta");
+Serial.println("7. Senzor temperatura dht11");
+Serial.println("8. Citire accelerometru");
+}
